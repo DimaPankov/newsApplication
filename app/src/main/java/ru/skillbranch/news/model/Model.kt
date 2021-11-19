@@ -1,4 +1,4 @@
-package ru.skillbranch.news
+package ru.skillbranch.news.model
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -7,8 +7,8 @@ import android.util.Log
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
-import java.io.IOException
-import java.io.InputStream
+import ru.skillbranch.news.presenter.News
+import java.io.ByteArrayOutputStream
 import java.net.URL
 
 class model {
@@ -72,17 +72,16 @@ class model {
     fun getResult() : MutableList<News>{
         val result = mutableListOf<News>()
         val taskImage = TaskBacgraundWorkImage().execute().get()
+
         val taskTitle = TaskBacgraundWorkTitle().execute().get()
         val taskUrl = TaskBacgraundWorkURL().execute().get()
         for(g in 0..taskTitle.size-5){
-            result.add(News(taskTitle[g],taskImage[g]))
+            //convert Bitmap to ByteArray
+            val stream = ByteArrayOutputStream()
+            taskImage[g].compress(Bitmap.CompressFormat.PNG, 100, stream)
+
+            result.add(News(taskTitle[g],taskImage[g],stream.toByteArray()))
         }
-
-
-
-
-
-
         return result
 
    }}

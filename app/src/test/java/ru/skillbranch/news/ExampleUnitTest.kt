@@ -3,6 +3,7 @@ package ru.skillbranch.news
 import org.junit.Test
 
 import org.junit.Assert.*
+import ru.skillbranch.news.model.model
 
 /**
  * Example local unit test, which will execute on the development machine (host).

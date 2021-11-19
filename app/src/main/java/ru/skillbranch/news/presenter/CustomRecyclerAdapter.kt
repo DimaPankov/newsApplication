@@ -1,7 +1,6 @@
-package ru.skillbranch.news
+package ru.skillbranch.news.presenter
 
-import android.graphics.BitmapFactory
-import android.media.Image
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,14 +8,16 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import java.net.URL
-import androidx.core.content.ContextCompat.startActivity
+import ru.skillbranch.news.R
+import ru.skillbranch.news.view.UsersContractView
+import ru.skillbranch.news.view.newsItem
+import android.graphics.Bitmap
+import java.io.ByteArrayOutputStream
 
-import android.content.Intent
-import android.os.Bundle
+
+class CustomRecyclerAdapter (private val names:List<News>, private val activity:UsersContractView) : RecyclerView.Adapter<CustomRecyclerAdapter.MyViewHolder>()  {
 
 
-class CustomRecyclerAdapter (private val names:List<News>) : RecyclerView.Adapter<CustomRecyclerAdapter.MyViewHolder>()  {
 
     fun <T : RecyclerView.ViewHolder> T.listen(event: (position: Int, type: Int) -> Unit): T {
         itemView.setOnClickListener {
@@ -44,14 +45,17 @@ class CustomRecyclerAdapter (private val names:List<News>) : RecyclerView.Adapte
     // элемента списка, созданный нами ранее в файле recyclerview_item.xml. А также вернуть наш
     // объект класса ViewHolder.
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-      val items = names
-        val itemView =
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.recyclerview_item, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_item, parent, false)
         return MyViewHolder(itemView).listen { pos, type ->
-            val item = items.get(pos)
-            Log.d("TAG", pos.toString())
-            val a = recyclerView()
+
+
+
+
+            val i = Intent(activity.getActivity(), newsItem::class.java)
+            i.putExtra("title", names[pos].title)
+            i.putExtra("image",names[pos].byteArray)
+            activity.getActivity().startActivity(i)
+
 
         }
     }
